@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ message }}</h1>
+    {% for item in attempts %}
+        <div class="col-md6 border rounded">
+            <h2>id: {{ item.id }}</h2>
+            <h2>Тест: {{ item.test.title }}</h2>
+            {% if current_user.__class__.__name__ == 'Teacher' %}
+                <h2>Ученик: {{ item.student.name }} ({{ item.student.login }})</h2>
+            {% elif current_user.__class__.__name__ == 'Student' %}
+                <h2>Учитель: {{ item.test.teacher.name }} ({{ item.test.teacher.login }})</h2>
+            {% endif %}
+            <div>
+                Дата прохождения - {{ item.complete_time }}
+            </div>
+            <div>
+                <a href="/attempt/{{ item.id }}/result" class="btn btn-warning">Посмотреть результат</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

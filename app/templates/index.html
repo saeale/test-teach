@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ message }}</h1>
+    {% if current_user.is_authenticated %}
+        {% if current_user.__class__.__name__ == 'Student' %}
+            <a href="teachers" class="btn btn-secondary">Мои учителя</a>
+            <a href="attempts" class="btn btn-secondary">Мои попытки</a>
+        {% elif current_user.__class__.__name__ == 'Teacher' %}
+            <a href="test" class="btn btn-secondary">Создать тест</a>
+            <a href="attempts" class="btn btn-secondary">Попытки учеников</a>
+            <a href="students" class="btn btn-secondary">Мои ученики</a>
+        {% endif %}
+    {% endif %}
+    {% for item in tests %}
+        <div class="col-md6 border rounded">
+            <h2>{{ item.title }}</h2>
+            <div>
+                Автор: {{ item.teacher.name }} ({{ item.teacher.login }})
+            </div>
+            <div>
+                Дата создания - {{ item.created_date }}
+            </div>
+            {% if current_user.is_authenticated %}
+                {% if current_user == item.teacher and current_user.__class__.__name__ == 'Teacher' %}
+                <div>
+                    <a href="/attempts/{{ item.id }}" class="btn btn-warning">Попытки</a>
+                    <a href="/test/{{ item.id }}" class="btn btn-warning">Изменить</a>
+                    <a href="/test_delete/{{ item.id }}" class="btn btn-danger">Удалить</a>
+                </div>
+                {% elif current_user.__class__.__name__ == 'Student' %}
+                    <a href="/test/{{ item.id }}/attempt" class="btn btn-warning">Пройти тест</a>
+                    <a href="/attempts/{{ item.id }}" class="btn btn-warning">Мои попытки</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock %}

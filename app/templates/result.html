@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Результаты</h1>
+    <h2>Тест: {{ attempt.test.title }}</h2>
+    <h2>Автор: {{ attempt.test.teacher.name }} ({{ attempt.test.teacher.login }})</h2>
+    <h2>Ученик: {{ attempt.student.name }} ({{ attempt.student.login }})</h2>
+    <p>Время прохождения: {{ delta }}</p><br>
+    <h2>Баллы: {{ points |sum }}/{{ total_points }}</h2>
+    {% for question in attempt.test.questions %}
+        <div class="question">
+            <h2>Вопрос №{{ loop.index }}</h2>
+            <p>id: {{ question.id }}</p>
+            <p>Баллы: {{ points[loop.index0] }} из {{ question.points }}</p>
+
+            <div class="form-group">
+                <h3>{{ question.content }}</h3>
+            </div>
+            <img src="/static/tasks/{{ question.id }}/{{ question.image }}" alt="Нет картинки" style="height: 30vh; width: auto;">
+            <br>
+
+            <p>Ваш ответ: {{ answers[loop.index0] }}</p>
+            <p>Правильный ответ: {{ corr_answers[loop.index0] }}</p><br>
+        </div>
+    {% endfor %}
+    <div>
+        <a href="/" class="btn btn-success">На главную</a>
+    </div>
+{% endblock %}
