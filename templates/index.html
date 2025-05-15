@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ message }}</h1>
+    {% if current_user.is_authenticated %}
+        {% if current_user.__class__.__name__ == 'Teacher' %}
+            <p style="margin-top: 20px;"><a href="test" class="btn big-btn">Создать тест</a></p>
+        {% endif %}
+    {% endif %}
+    {% for item in tests %}
+        <div class="block-window">
+            <h2>{{ item.title }}</h2>
+            <h2>Автор: {{ item.teacher.name }} ({{ item.teacher.login }})</h2>
+            <p>Дата создания - {{ item.created_date }}</p>
+            <div>
+            {% if current_user.is_authenticated %}
+                {% if current_user == item.teacher and current_user.__class__.__name__ == 'Teacher' %}
+                    <a href="/attempts/{{ item.id }}" class="btn">Попытки</a>
+                    <a href="/test/{{ item.id }}" class="btn">Изменить</a>
+                    <a href="/test_delete/{{ item.id }}" class="btn">Удалить</a>
+                {% elif current_user.__class__.__name__ == 'Student' %}
+                    <a href="/test/{{ item.id }}/attempt" class="btn">Пройти тест</a>
+                    <a href="/attempts/{{ item.id }}" class="btn">Мои попытки</a>
+                {% endif %}
+            {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

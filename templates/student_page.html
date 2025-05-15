@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Страница ученика</h1>
+    <div class="block-window">
+    <h2>{{ student.name }} ({{ student.login }})</h2>
+    <p>
+        Дата регистрации: {{ student.created_date }}
+    </p>
+    {% if student.email %}
+        <p>
+            email: {{ student.email }}
+        </p>
+    {% endif %}
+    {% if student.work %}
+        <p>
+            Место учёбы: {{ student.work }}
+        </p>
+    {% endif %}
+    {% if student.work_address %}
+        <p>
+            Адрес учебного заведения: {{ student.work_address }}
+        </p>
+        <img src="/static/maps/students/{{ student.id }}/map.png" alt="Не удалось загрузить карту" style="height: 30vh; width: auto;">
+    {% endif %}
+    {% if student.about %}
+        <p>
+            О себе:<br>{{ student.about }}
+        </p>
+    {% endif %}
+    </div>
+    <h1>Попытки</h1>
+    {% for item in attempts %}
+        <div class="block-window">
+            <h2>Попытка {{ item.complete_time }}</h2>
+            <p>
+                Тест: {{ item.test.title }} (id {{ item.test.id }})
+            </p>
+            <a href="/attempt/{{ item.id }}/result" class="btn btn-warning">Перейти к результатам</a>
+        </div>
+    {% endfor %}
+    <div>
+        <a href="/" class="btn big-btn">На главную</a>
+    </div>
+{% endblock %}

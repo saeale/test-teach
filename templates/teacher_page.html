@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Страница учителя</h1>
+    <div class="block-window">
+    <h2>{{ teacher.name }} ({{ teacher.login }})</h2>
+    <p>
+        Дата регистрации: {{ teacher.created_date }}
+    </p>
+    {% if teacher.email %}
+        <p>
+            email: {{ teacher.email }}
+        </p>
+    {% endif %}
+    {% if teacher.work %}
+        <p>
+            Место работы: {{ teacher.work }}
+        </p>
+    {% endif %}
+    {% if teacher.work_address %}
+        <p>
+            Адрес работы: {{ teacher.work_address }}
+        </p>
+        <img src="/static/maps/teachers/{{ teacher.id }}/map.png" alt="Не удалось загрузить карту" style="height: 30vh; width: auto;">
+    {% endif %}
+    {% if teacher.about %}
+        <p>
+            О себе:<br>{{ teacher.about }}
+        </p>
+    {% endif %}
+    </div>
+    <h1>Тесты</h1>
+    {% for item in tests %}
+        <div class="block-window">
+            <h2>{{ item.title }}</h2>
+            <p>
+                Автор: {{ teacher.name }} ({{ teacher.login }})
+            </p>
+            <p>
+                Дата создания - {{ item.created_date }}
+            </p>
+            {% if current_user.is_authenticated and current_user.__class__.__name__ == 'Student' %}
+                <a href="/test/{{ item.id }}/attempt" class="btn btn-warning">Пройти тест</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <div>
+        <a href="/" class="btn big-btn">На главную</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Добавить учителя</h1>
+    <form action="" method="post" class="block-window">
+        {{ form.hidden_tag() }}
+        <p>
+            <h2>{{ form.teacher_login.label }}</h2>
+            {{ form.teacher_login(class="form-control") }}<br>
+            {% for error in form.teacher_login.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+            {% if message %}
+                <p class="alert alert-danger" role="alert">
+                    {{ message }}
+                </p>
+            {% endif %}
+        </p>
+        <button
+            type="submit"
+            name="add"
+            value="1"
+            class="btn btn-success"
+        >
+            Добавить
+        </button>
+    </form>
+    <h1>Ваши учителя</h1>
+    {% for teacher in teachers %}
+        <div class="block-window">
+            <h2>{{ teacher.name }} ({{ teacher.login }})</h2>
+            <p>
+                Дата регистрации: {{ teacher.created_date }}
+            </p>
+            <p>
+                Место работы: {{ teacher.work }}
+            </p>
+            <p>
+                <a href="/teachers/{{ teacher.id }}" class="btn btn-warning">На страницу</a>
+                <a href="/teacher_delete/{{ teacher.id }}" class="btn btn-danger">Удалить</a>
+            </p>
+        </div>
+    {% endfor %}
+    <div>
+        <a href="/" class="btn big-btn">На главную</a>
+    </div>
+{% endblock %}

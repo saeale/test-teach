@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <title>{{ title }}</title>
+</head>
+<body>
+<header>
+    <nav>
+        <div class="wrapper">
+            <div class="logo"><a href="/">Test+Teach</a></div>
+            <input type="radio" name="slider" id="menu-btn">
+            <input type="radio" name="slider" id="close-btn">
+            <ul class="nav-links">
+                <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
+                {% if current_user.is_authenticated %}
+                    <li>
+                        <input type="checkbox" id="showDrop">
+                        <a href="#" class="desktop-item">{{ current_user.name }}</a>
+                        <label for="showDrop" class="mobile-item">{{ current_user.name }}</label>
+                        <ul class="drop-menu">
+                            {% if current_user.__class__.__name__ == 'Teacher' %}
+                                <li><a href="/teachers/{{ current_user.id }}">Моя страница</a></li>
+                                <li><a href="/students">Ученики</a></li>
+                                <li><a href="/attempts">Попытки учеников</a></li>
+                                <li><a href="/logout">Выйти</a></li>
+                            {% elif current_user.__class__.__name__ == 'Student' %}
+                                <li><a href="/students/{{ current_user.id }}">Моя страница</a></li>
+                                <li><a href="/teachers">Учителя</a></li>
+                                <li><a href="/attempts">Попытки</a></li>
+                                <li><a href="/logout">Выйти</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="/register">Зарегистрироваться</a></li>
+                    <li><a href="/login">Войти</a></li>
+                {% endif %}
+            </ul>
+            <label for="menu-btn" class="btn menu-btn"><i class="fas fa-bars"></i></label>
+        </div>
+    </nav>
+</header>
+<!-- Begin page content -->
+<main role="main" class="container">
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>

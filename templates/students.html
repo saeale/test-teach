@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Ваши ученики</h1>
+    {% for student in students %}
+        <div class="block-window">
+            <h2>{{ student.name }} ({{ student.login }})</h2>
+            <p>
+                Дата регистрации: {{ student.created_date }}
+            </p>
+            <p>
+                Место учёбы: {{ student.work }}
+            </p>
+            <p>
+                <a href="/students/{{ student.id }}" class="btn btn-warning">На страницу</a>
+                <a href="/student_delete/{{ student.id }}" class="btn btn-danger">Удалить</a>
+            </p>
+        </div>
+    {% endfor %}
+    <div>
+        <a href="/" class="btn big-btn">На главную</a>
+    </div>
+{% endblock %}

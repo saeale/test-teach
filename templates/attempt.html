@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ test.title }}</h1>
+    <h2>Автор: {{ test.teacher.name }} ({{ test.teacher.login }})</h2>
+    <p>Количество вопросов: {{ test.questions |length }}</p>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+            {% for question in test.questions %}
+                <div class="block-window">
+                    {{ form.questions.entries[loop.index0].hidden_tag() }}
+
+                    <h1>Вопрос №{{ loop.index }}</h1>
+                    <p>id: {{ question.id }}</p>
+                    <p>Баллы: {{ question.points }}</p>
+                    <h1>{{ question.content }}</h1>
+                    {% if question.image %}
+                        <img src="/static/tasks/{{ question.id }}/{{ question.image }}" alt="Нет картинки" style="height: 30vh; width: auto;">
+                    {% endif %}
+                    <p>
+                        {% if question.question_type == 0 %}
+                            {{ form.questions.entries[loop.index0].answer0.label }}<br>
+                            {{ form.questions.entries[loop.index0].answer0(class="form-control") }}<br>
+                        {% elif question.question_type == 1 %}
+                            {{ form.questions.entries[loop.index0].answer1.label }}<br>
+                            {% set choices = question.choices.split(";") %}
+                            {% for subfield in form.questions.entries[loop.index0].answer1 %}
+                                {% if loop.index0 < (choices |length) %}
+                                    <ul style="list-style: none;">
+                                        <li>{{ subfield }} {{ choices[loop.index0] }}</li>
+                                    </ul>
+                                {% endif %}
+                            {% endfor %}
+                        {% elif question.question_type == 2 %}
+                            Выберите ответ(ы):<br>
+                            {{ form.questions.entries[loop.index0].answer2() }}
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        <div class="mt-3">
+        <button
+            type="submit"
+            name="complete"
+            value="1"
+            class="btn btn-success"
+        >
+            Завершить
+        </button>
+    </div>
+        {{ message }}
+    </form>
+{% endblock %}
